@@ -18,7 +18,7 @@ def call(body) {
         stage('Version') {
           when {
             not {
-                environment name: '{params.createTag}', value: ''
+                environment name: '${params.createTag}', value: ''
             }
             
           }
@@ -29,9 +29,9 @@ def call(body) {
         stage('Snapshot') {
           when {
             anyOf {
-                environment name: '{params.buildAsSnapshot}', value: 'true'
+                environment name: '${params.buildAsSnapshot}', value: 'true'
               not {
-                  environment name: '{params.head}', value: ''
+                  environment name: '${params.head}', value: ''
               }
               
             }
@@ -44,8 +44,8 @@ def call(body) {
         stage('Test') {
           when {
             allOf {
-                environment name: '{params.createTag}', value: ''
-                environment name: '{params.head}', value: ''
+                environment name: '${params.createTag}', value: ''
+                environment name: '${params.head}', value: ''
             }
             
           }
