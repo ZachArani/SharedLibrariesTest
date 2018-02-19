@@ -13,23 +13,48 @@ def call(body) {
             stage ('Clone') {
             checkout scm
         }
-        stage ('Build') {
-            sh "echo 'building ${params.head} ...'"
-        }
-        stage ('Tests') {
-            parallel 'static': {
-                sh "echo 'shell scripts to run static tests...'"
-            },
-            'unit': {
-                sh "echo 'shell scripts to run unit tests...'"
-            },
-            'integration': {
-                sh "echo 'shell scripts to run integration tests...'"
+        stage('Build') {
+      parallel {
+        stage('Version') {
+          when {
+            not {
+                environment name: '{params.createTag}', value: ''
             }
+            
+          }
+          steps {
+            echo "${params.createTag}"
+          }
         }
-        stage ('Deploy') {
-            sh "echo 'deploying to server ${config.serverDomain}...'"
+        stage('Snapshot') {
+          when {
+            anyOf {
+                environment name: '{params.buildAsSnapshot}', value: 'true'
+              not {
+                  environment name: '{params.head}', value: ''
+              }
+              
+            }
+            
+          }
+          steps {
+            echo "${params.head}"
+          }
         }
+        stage('Test') {
+          when {
+            allOf {
+                environment name: '{params.createTag}', value: ''
+                environment name: '{params.head}', value: ''
+            }
+            
+          }
+          steps {
+            echo 'Test'
+          }
+        }
+      }
+}
         } catch (err) {
             currentBuild.result = 'FAILED'
             throw err
