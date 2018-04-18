@@ -22,7 +22,7 @@ def call(body) {
               }
            }
            stage ('Done') {
-             sh "echo 'We're done I guess'"
+             sh "echo 'done I guess'"
            }
         } catch (err) {
             currentBuild.result = 'FAILED'
