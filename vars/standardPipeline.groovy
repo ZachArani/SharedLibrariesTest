@@ -6,7 +6,7 @@ def call(body) {
     body()
 
     node {
-      stages {
+      try {
         stage('Build') {
           parallel {
             stage('Version') {
@@ -42,6 +42,9 @@ def call(body) {
             }
           }
         }
+      } catch(err){
+          currentBuild.result = 'FAILED'
+          throw err
       }
     parameters {
       string(name: 'createTag', defaultValue: '', description: '')
