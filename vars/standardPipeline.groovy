@@ -7,45 +7,30 @@ def call(body) {
 
     node {
       try {
-        stage('Build') {
-          parallel {
-            stage('Version') {
-              when {
-                not {
-                  environment name: 'createTag', value: ''
-                }
-              }
-              steps {
-                sh 'echo version'
-              }
-            }
-            stage('Snapshot') {
-              when {
-                anyOf {
-                  environment name: 'buildAsSnapshot', value: 'true'
-                }
-              }
-              steps {
-                sh 'echo snapshot'
-              }
-            }
-            stage('Test') {
-              when {
-                allOf {
-                  environment name: 'buildAsSnapshot', value: 'false'
-                  environment name: 'createTag', value: ''
-                }
-              }
-              steps {
-                sh 'echo test'
-              }
-            }
-          }
+        stage ('Clone') {
+            checkout scm
         }
-      } catch(err){
-          currentBuild.result = 'FAILED'
-          throw err
-      }
+        stage ('Build') {
+            sh "echo 'building ${buildAsSnapshot} ...'"
+        }
+        stage ('Tests') {
+            parallel 'static': {
+                sh "echo 'shell scripts to run static tests...'"
+            },
+            'unit': {
+                sh "echo 'shell scripts to run unit tests...'"
+             },
+             'integration': {
+                sh "echo 'shell scripts to run integration tests...'"
+              }
+           }
+           stage ('Deploy') {
+             sh "echo 'deploying to server ${createTag}...'"
+           }
+        } catch (err) {
+            currentBuild.result = 'FAILED'
+            throw err
+        }
     parameters {
       string(name: 'createTag', defaultValue: '', description: '')
       booleanParam(name: 'buildAsSnapshot', defaultValue: false)
