@@ -12,14 +12,16 @@ def call(body) {
         }
         stage ('Tests') {
             parallel 'Version': {
-                sh "echo 'version stuff'"
+                if(createTag != params.createTag)
+                    sh "echo 'version stuff'"
             },
             'Snapshot': {
                 if(params.buildAsSnapshot == true)          
                     sh 'echo snapshot'
              },
              'Test': {
-                sh "echo 'test'"
+                 if(params.buildAsSnapshot == false && params.createTag == '')
+                     sh "echo 'test'"
               }
            }
            stage ('Done') {
