@@ -15,14 +15,8 @@ def call(body) {
                 sh "echo 'version stuff'"
             },
             'Snapshot': {
-                when {
-                    anyOf {
-                        environment name: 'buildAsSnapshot', value: 'true'
-                    }
-                }
-                steps {
+                if(params.buildAsSnapshot == true)          
                     sh 'echo snapshot'
-                }
              },
              'Test': {
                 sh "echo 'test'"
