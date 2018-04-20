@@ -6,27 +6,32 @@ def call(body) {
     body()
 
     node {
-      try {
-        stage ('Clone') {
-            checkout scm
-        }
-        stage ('Tests') {
-            parallel 'Version': {
-                if(createTag != params.createTag)
-                    sh "echo 'version stuff'"
-            },
-            'Snapshot': {
-                if(params.buildAsSnapshot == true)          
-                    sh 'echo snapshot'
-             },
-             'Test': {
-                 if(params.buildAsSnapshot == false && params.createTag == '')
-                     sh "echo 'test'"
-              }
+        try {
+            stage ('Clean Workspace') {
+                //sh "rm -r node_modules"
+                //sh "rm -r reports"
+                sh "echo 'remove node_modules and reports'"
+            }
+            if(params.createTag != '') {
+                stage ('Prepare') {
+                    sh "echo 'do something here'" 
+                }
            }
-           stage ('Done') {
-             sh "echo 'done I guess'"
+           stage ('Install') {
+             //sh "npm install"
+             sh "echo 'install'"
            }
+            stage("Run") {
+                if(params.createTag != '') {
+                    //sh "npm publish"   
+                    sh "echo 'publish'"
+                }
+                else {
+                    //sh "npm pack"
+                    //sh "rm ./*.tgz"
+                    sh "echo 'pack and delete'"
+                }
+            }
         } catch (err) {
             currentBuild.result = 'FAILED'
             throw err
