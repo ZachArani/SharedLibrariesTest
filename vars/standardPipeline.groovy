@@ -22,7 +22,7 @@ def call(body) {
              sh "echo 'install'"
            }
             stage("Run") {
-                if(params.createTag != '') {
+                if(params.createTag != '' || "${BRANCH_NAME}" == "master") {
                     //sh "npm publish"   
                     sh "echo 'publish'"
                     sh "printenv";
