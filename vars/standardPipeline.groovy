@@ -25,13 +25,13 @@ def call(body) {
                 if(params.createTag != '') {
                     //sh "npm publish"   
                     sh "echo 'publish'"
-                    sh "echo '" + params.GIT_BRANCH + "'";
+                    sh "printenv";
                 }
                 else {
                     //sh "npm pack"
                     //sh "rm ./*.tgz"
                     sh "echo 'pack and delete'"
-                    sh "echo '" + params.GIT_BRANCH + "'";
+                    sh "printenv";
                 }
             }
         } catch (err) {
