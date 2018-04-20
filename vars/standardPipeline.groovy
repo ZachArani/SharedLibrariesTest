@@ -12,7 +12,7 @@ def call(body) {
                 //sh "rm -r reports"
                 sh "echo 'remove node_modules and reports'"
             }
-            if(params.createTag != '') {
+            if(params.createTag == '') {
                 stage ('Prepare') {
                     sh "echo 'do something here'" 
                 }
