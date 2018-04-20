@@ -25,13 +25,11 @@ def call(body) {
                 if(params.createTag != '' || "${BRANCH_NAME}" == "master") {
                     //sh "npm publish"   
                     sh "echo 'publish'"
-                    sh "printenv";
                 }
                 else {
                     //sh "npm pack"
                     //sh "rm ./*.tgz"
                     sh "echo 'pack and delete'"
-                    sh "echo '${BRANCH_NAME}'";
                 }
             }
         } catch (err) {
