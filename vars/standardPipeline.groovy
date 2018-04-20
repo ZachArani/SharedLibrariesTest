@@ -13,7 +13,7 @@ def call(body) {
                 sh "echo 'remove node_modules and reports'"
             }
             if(params.createTag == '') {
-                stage ('Prepare') {
+                stage ('Prepare Snapshot') {
                     sh "echo 'do something here'" 
                 }
            }
