@@ -31,7 +31,7 @@ def call(body) {
                     //sh "npm pack"
                     //sh "rm ./*.tgz"
                     sh "echo 'pack and delete'"
-                    sh "printenv";
+                    sh "echo '${BRANCH_NAME}'";
                 }
             }
         } catch (err) {
