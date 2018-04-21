@@ -7,7 +7,7 @@ def call(body) {
 
     node {
         try {
-            stage ('Clean Workspace') {
+            stage ('Clean') {
                 sh "npx @nti/ci-scripts clean"
             }
             if(params.createTag == '') {
