@@ -8,9 +8,7 @@ def call(body) {
     node {
         try {
             stage ('Clean Workspace') {
-                //sh "rm -r node_modules"
-                //sh "rm -r reports"
-                sh "echo 'remove node_modules and reports'"
+                sh "npx @nti/ci-scripts clean"
             }
             if(params.createTag == '') {
                 stage ('Prepare Snapshot') {
