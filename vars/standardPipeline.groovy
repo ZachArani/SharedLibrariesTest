@@ -16,13 +16,11 @@ def call(body) {
                 }
            }
            stage ('Install') {
-             //sh "npm install"
-             sh "echo 'install'"
+             sh "npm install"
            }
             stage("Run") {
                 if(params.createTag != '' || "${BRANCH_NAME}" == "master") {
-                    //sh "npm publish"   
-                    sh "echo 'publish'"
+                    sh "npm publish"   
                 }
                 else {
                     //sh "npm pack"
