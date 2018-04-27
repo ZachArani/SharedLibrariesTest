@@ -8,24 +8,29 @@ def call(body) {
     node {
         try {
             stage ('Clean') {
-                sh "npx @nti/ci-scripts clean"
+                sh "npx @nti/ci-scripts@micro clean"
             }
             if(params.createTag == '') {
-                stage ('Prepare Snapshot') {
-                    sh "echo 'do something here'" 
+                stage ('Prepare') {
+                    sh "npx @nti/ci-scripts@micro prepare" 
                 }
            }
            stage ('Install') {
-             sh "npm install"
+               if(params.createTag == '') {
+                   sh "npx @nti/ci-scripts@micro install" 
+               }
+               else {
+                    sh "npx @nti/ci-scripts@micro ci"
+               }
            }
             stage("Run") {
                 if(params.createTag != '' || "${BRANCH_NAME}" == "master") {
-                    sh "npm publish"   
+                    sh "npx @nti/ci-scripts@micro publish"   
                 }
                 else {
                     //sh "npm pack"
                     //sh "rm ./*.tgz"
-                    sh "echo 'pack and delete'"
+                    sh "npx @nti/ci-scripts@micro pack"
                 }
             }
         } catch (err) {
