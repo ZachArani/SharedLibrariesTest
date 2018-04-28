@@ -11,13 +11,13 @@ def call(body) {
                 sh "npx @nti/ci-scripts@micro clean"
             }
             println params.createTag
-            if(!(params.createTag != '') && (params.createTag == '' || "${BRANCH_NAME}" != "master")) {
+            if(params.createTag == null || params.createTag == '' || "${BRANCH_NAME}" != "master")) {
                 stage ('Prepare') {
                     sh "npx @nti/ci-scripts@micro prepare" 
                 }
            }
            stage ('Install') {
-               if(params.createTag == '') {
+               if(params.createTag == null || params.createTag == '') {
                    sh "npx @nti/ci-scripts@micro install" 
                }
                else {
@@ -25,7 +25,7 @@ def call(body) {
                }
            }
             stage("Run") {
-                if(params.createTag != '' || "${BRANCH_NAME}" == "master") {
+                if((params.createTag != null && params.createTag != '') || "${BRANCH_NAME}" == "master") {
                     sh "npx @nti/ci-scripts@micro publish"   
                 }
                 else {
