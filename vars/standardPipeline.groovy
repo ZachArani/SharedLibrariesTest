@@ -10,8 +10,7 @@ def call(body) {
             stage ('Clean') {
                 sh "npx @nti/ci-scripts@micro clean"
             }
-            println params.createTag
-            if(params.createTag == null || params.createTag == '' || "${BRANCH_NAME}" != "master")) {
+            if(params.createTag == null || params.createTag == '' || "${BRANCH_NAME}" != "master") {
                 stage ('Prepare') {
                     sh "npx @nti/ci-scripts@micro prepare" 
                 }
