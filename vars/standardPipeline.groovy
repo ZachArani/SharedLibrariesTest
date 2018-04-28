@@ -8,6 +8,9 @@ def call(body) {
     node {
         try {
             println "${WORKSPACE}"
+            stage ('Clone') {
+                checkout scm
+            }
             stage ('Clean') {
                 sh "npx @nti/ci-scripts@micro clean"
             }
