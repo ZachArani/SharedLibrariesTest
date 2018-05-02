@@ -12,29 +12,29 @@ def call(body) {
                 checkout scm
             }
             stage ('Clean') {
-                sh "npx @nti/ci-scripts@micro clean"
+                sh "npx @nti/ci-scripts clean"
             }
             if(params.createTag == null || params.createTag == '' || "${BRANCH_NAME}" != "master") {
                 stage ('Prepare') {
-                    sh "npx @nti/ci-scripts@micro prepare" 
+                    sh "npx @nti/ci-scripts prepare"
                 }
            }
            stage ('Install') {
                if(params.createTag == null || params.createTag == '') {
-                   sh "npx @nti/ci-scripts@micro install" 
+                   sh "npx @nti/ci-scripts install"
                }
                else {
-                    sh "npx @nti/ci-scripts@micro install-strict"
+                    sh "npx @nti/ci-scripts install-strict"
                }
            }
             stage("Run") {
                 if((params.createTag != null && params.createTag != '') || "${BRANCH_NAME}" == "master") {
-                    sh "npx @nti/ci-scripts@micro publish"   
+                    sh "npx @nti/ci-scripts publish"
                 }
                 else {
                     //sh "npm pack"
                     //sh "rm ./*.tgz"
-                    sh "npx @nti/ci-scripts@micro pack"
+                    sh "npx @nti/ci-scripts pack"
                 }
             }
         } catch (err) {
