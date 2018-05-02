@@ -24,7 +24,7 @@ def call(body) {
                    sh "npx @nti/ci-scripts@micro install" 
                }
                else {
-                    sh "npx @nti/ci-scripts@micro ci"
+                    sh "npx @nti/ci-scripts@micro install-strict"
                }
            }
             stage("Run") {
