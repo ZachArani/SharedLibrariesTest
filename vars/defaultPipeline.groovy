@@ -10,7 +10,7 @@ def call(body) {
             println "${WORKSPACE}"
             stage ('Clone') {
                 checkout scm
-                sh 'echo "$GIT_URL"'
+                sh 'echo ${GIT_URL}'
             }
             stage ('Clean') {
                 sh "npx @nti/ci-scripts clean"
