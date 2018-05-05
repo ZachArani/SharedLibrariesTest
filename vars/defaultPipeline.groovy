@@ -10,6 +10,7 @@ def call(body) {
             println "${WORKSPACE}"
             stage ('Clone') {
                 checkout scm
+                sh 'echo "$GIT_URL"'
             }
             stage ('Clean') {
                 sh "npx @nti/ci-scripts clean"
@@ -40,7 +41,11 @@ def call(body) {
         } catch (err) {
             currentBuild.result = 'FAILED'
             sh 'echo "TEST!"'
-            gitHubIssueNotifier {} 
+            gitHubIssueNotifier {
+                 issueRepo("$GIT_URL") 
+                issueTitle("$JOB_NAME $BUILD_DISPLAY_NAME failed")
+                issueBody("Build '$JOB_NAME' is failing!\nLast 50 lines of build output:\n```\n${BUILD_LOG, maxLines=50}\n```\nChanges since last successful build:\n${CHANGES_SINCE_LAST_SUCCESS, format=\"%c\", changesFormat=\"- [%a] %r - %m\n\"}\n[View full output]($BUILD_URL)")
+            } 
             throw err
         }
     parameters {
