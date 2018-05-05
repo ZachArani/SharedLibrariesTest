@@ -39,6 +39,7 @@ def call(body) {
             }
         } catch (err) {
             currentBuild.result = 'FAILED'
+            gitHubIssueNotifier {} 
             throw err
         }
     parameters {
