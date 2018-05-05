@@ -21,7 +21,7 @@ def call(body) {
            }
            stage ('Install') {
                if(params.createTag == null || params.createTag == '') {
-                   sh "npx @nti/ci-scripts install"
+                   sh "npx @nti/ci-scripts insasdftall"
                }
                else {
                     sh "npx @nti/ci-scripts install-strict"
