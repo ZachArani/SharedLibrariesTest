@@ -40,7 +40,7 @@ def call(body) {
             }
         } catch (err) {
             currentBuild.result = 'FAILED'
-            sh 'echo "TEST!"'
+            sh 'echo TEST!'
             gitHubIssueNotifier {
                  issueRepo("$GIT_URL") 
                 issueTitle("$JOB_NAME $BUILD_DISPLAY_NAME failed")
