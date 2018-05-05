@@ -10,7 +10,10 @@ def call(body) {
             println "${WORKSPACE}"
             stage ('Clone') {
                 checkout scm
-                sh 'echo ${GIT_URL}'
+                script {
+                    properties([[$class: 'GithubProjectProperty',
+                    projectUrlStr: 'https://github.com/NextThought/nti.test.jenkins']])
+                }
             }
             stage ('Clean') {
                 sh "npx @nti/ci-scripts clean"
@@ -41,11 +44,10 @@ def call(body) {
         } catch (err) {
             currentBuild.result = 'FAILED'
             sh 'echo TEST!'
-            gitHubIssueNotifier {
-                 issueRepo("$GIT_URL") 
-                issueTitle("$JOB_NAME $BUILD_DISPLAY_NAME failed")
-                issueBody("test")         
-            } 
+            step([$class: 'GitHubIssueNotifier',
+                  issueAppend: true,
+                  issueLabel: '',
+                  issueTitle: '$JOB_NAME $BUILD_DISPLAY_NAME failed'])
             throw err
         }
     parameters {
