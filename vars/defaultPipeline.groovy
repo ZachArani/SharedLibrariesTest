@@ -41,10 +41,12 @@ def call(body) {
             }
         } catch (err) {
             currentBuild.result = 'FAILED'
-            step([$class: 'GitHubIssueNotifier',
-                  issueAppend: true,
-                  issueLabel: '',
-                  issueTitle: '$JOB_NAME $BUILD_DISPLAY_NAME failed'])
+            if(env.BRANCH_NAME == "master"){
+                step([$class: 'GitHubIssueNotifier',
+                      issueAppend: true,
+                      issueLabel: '',
+                      issueTitle: '$JOB_NAME $BUILD_DISPLAY_NAME failed'])
+            }
             throw err
         }
     parameters {
