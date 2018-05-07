@@ -43,7 +43,7 @@ def call(body) {
             }
         } catch (err) {
          //   currentBuild.result = 'FAILED'
-            sh "echo ${currentBuild.result}"
+            sh "echo ${err}"
             if(currentBuild.result == 'ABORTED')
                 sh "echo abort"
             if(env.BRANCH_NAME == "master"){
