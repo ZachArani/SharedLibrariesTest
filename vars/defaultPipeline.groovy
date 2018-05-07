@@ -32,7 +32,7 @@ def call(body) {
                }
            }
             stage("Run") {
-                withCredentials([sshUserPrivateKey(keyFileVariable: 'testFile', credentialsId: '3d8be6d3-d795-4bfc-8962-6a6bd0bbf35d', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USERNAME')]) {
+                withCredentials([sshUserPrivateKey(keyFileVariable: 'testFile', credentialsId: '3d8be6d3-d795-4bfc-8962-6a6bd0bbf35d', passphraseVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
                     sh "env"
                     sh "cat testFile"
                     sh "echo $GIT_USERNAME"
