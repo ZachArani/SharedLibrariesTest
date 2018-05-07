@@ -12,7 +12,7 @@ def call(body) {
                 checkout scm
                 script {
                     properties([[$class: 'GithubProjectProperty',
-                    projectUrlStr: 'https://github.com/NextThought/nti.test.jenkins']])
+                    projectUrlStr: scm.getUserRemoteConfigs()[0].getUrl()]])
                 }
             }
             stage ('Clean') {
