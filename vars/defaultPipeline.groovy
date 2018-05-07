@@ -10,6 +10,7 @@ def call(body) {
             println "${WORKSPACE}"
             stage ('Clone') {
                 checkout scm
+                sh "echo ${scm.getUserRemoteConfigs()[0].getUrl()}"
                 script {
                     properties([[$class: 'GithubProjectProperty',
                     projectUrlStr: scm.getUserRemoteConfigs()[0].getUrl()]])
