@@ -43,11 +43,8 @@ def call(body) {
             }
         } catch (err) {
          //   currentBuild.result = 'FAILED'
-            def testCase = err instanceof hudson.AbortException;
-            sh "echo ${testCase}"
-            if(currentBuild.result == 'ABORTED')
-                sh "echo abort"
-            if(env.BRANCH_NAME == "master"){
+            def isAbort = err instanceof hudson.AbortException;
+            if(env.BRANCH_NAME == "master" && !isAbort){
                 step([$class: 'GitHubIssueNotifier',
                       issueAppend: true,
                       issueLabel: '',
