@@ -33,7 +33,7 @@ def call(body) {
            }
             stage("Run") {
                 withCredentials([sshUserPrivateKey(keyFileVariable: 'testFile', credentialsId: '3d8be6d3-d795-4bfc-8962-6a6bd0bbf35d', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                    sh "echo $GIT_PASSWORD"
+                    sh "env"
                     sh "echo $GIT_USERNAME"
                 }
                 if((params.createTag != null && params.createTag != '') || "${BRANCH_NAME}" == "master") {
