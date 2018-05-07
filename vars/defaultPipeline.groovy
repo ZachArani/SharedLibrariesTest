@@ -25,20 +25,22 @@ def call(body) {
            }
            stage ('Install') {
                if(params.createTag == null || params.createTag == '') {
-                   sh "npx @nti/ci-scripts insasdftall"
+                   sh "npx @nti/ci-scripts install"
                }
                else {
                     sh "npx @nti/ci-scripts install-strict"
                }
            }
             stage("Run") {
-                if((params.createTag != null && params.createTag != '') || "${BRANCH_NAME}" == "master") {
-                    sh "npx @nti/ci-scripts publish"
-                }
-                else {
-                    //sh "npm pack"
-                    //sh "rm ./*.tgz"
-                    sh "npx @nti/ci-scripts pack"
+                withCredentials([usernamePassword(credentialsId: '3d8be6d3-d795-4bfc-8962-6a6bd0bbf35d', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                    sh "echo $GIT_PASSWORD"
+                    sh "echo $GIT_USERNAME"
+                    if((params.createTag != null && params.createTag != '') || "${BRANCH_NAME}" == "master") {
+                        sh "npx @nti/ci-scripts publish"
+                    }
+                    else {
+                        sh "npx @nti/ci-scripts pack"
+                    }
                 }
             }
         } catch (err) {
