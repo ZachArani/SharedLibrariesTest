@@ -43,6 +43,8 @@ def call(body) {
             }
         } catch (err) {
             currentBuild.result = 'FAILED'
+            if(currentBuild.result = 'ABORTED')
+                sh "echo abort"
             if(env.BRANCH_NAME == "master"){
                 step([$class: 'GitHubIssueNotifier',
                       issueAppend: true,
