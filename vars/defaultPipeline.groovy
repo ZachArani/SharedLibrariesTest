@@ -11,6 +11,7 @@ def call(body) {
             stage ('Clone') {
                 checkout scm
                 def gitURL = scm.getUserRemoteConfigs()[0].getUrl().replace("git@github.com:","https://github.com/")
+                sh "echo $gitURL"
                 script {
                     properties([[$class: 'GithubProjectProperty',
                     projectUrlStr: gitURL]])
