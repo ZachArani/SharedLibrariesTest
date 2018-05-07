@@ -43,7 +43,8 @@ def call(body) {
             }
         } catch (err) {
          //   currentBuild.result = 'FAILED'
-            sh "echo ${err}"
+            def testCase = err instanceof hudson.AbortException;
+            sh "echo ${testCase}"
             if(currentBuild.result == 'ABORTED')
                 sh "echo abort"
             if(env.BRANCH_NAME == "master"){
