@@ -7,11 +7,9 @@ def call(body) {
 
     node {
         try {
-            println "${WORKSPACE}"
             stage ('Clone') {
                 checkout scm
                 def gitURL = scm.getUserRemoteConfigs()[0].getUrl().replace("git@github.com:","https://github.com/").replace(".git","");
-                sh "echo $gitURL"
                 script {
                     properties([[$class: 'GithubProjectProperty',
                     projectUrlStr: gitURL]])
@@ -20,13 +18,13 @@ def call(body) {
             stage ('Clean') {
                 sh "npx @nti/ci-scripts clean"
             }
-            if(params.createTag == null || params.createTag == '' || "${BRANCH_NAME}" != "master") {
+            if(!("${BRANCH_NAME}" ==~ /v\d+\.\d+\.\d+/)) { //If not version
                 stage ('Prepare') {
                     sh "npx @nti/ci-scripts prepare"
                 }
            }
            stage ('Install') {
-               if(params.createTag == null || params.createTag == '') {
+               if(!("${BRANCH_NAME}" ==~ /v\d+\.\d+\.\d+/)) {
                    sh "npx @nti/ci-scripts install"
                }
                else {
@@ -34,7 +32,7 @@ def call(body) {
                }
            }
             stage("Run") {
-                if((params.createTag != null && params.createTag != '') || "${BRANCH_NAME}" == "master") {
+                if(("${BRANCH_NAME}" ==~ /v\d+\.\d+\.\d+/) || "${BRANCH_NAME}" == "master") { //Version or snapshot
                     sh "npx @nti/ci-scripts publish"
                 }
                 else {
