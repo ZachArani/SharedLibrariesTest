@@ -14,7 +14,7 @@ def call(body) {
                     properties([[$class: 'GithubProjectProperty',
                     projectUrlStr: gitURL]])
                 }
-                println gitURL;
+                sh "echo ${gitURL}";
             }
             stage ('Clean') {
                 sh "npx @nti/ci-scripts clean"
@@ -51,9 +51,5 @@ def call(body) {
             }
             throw err
         }
-    parameters {
-      string(name: 'createTag', defaultValue: '', description: '')
-      booleanParam(name: 'buildAsSnapshot', defaultValue: false)
-    }
   }
 }
