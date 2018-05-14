@@ -14,6 +14,7 @@ def call(body) {
                     properties([[$class: 'GithubProjectProperty',
                     projectUrlStr: gitURL]])
                 }
+                println gitURL;
             }
             stage ('Clean') {
                 sh "npx @nti/ci-scripts clean"
