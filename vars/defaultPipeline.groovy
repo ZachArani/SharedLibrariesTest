@@ -6,6 +6,7 @@ def call(body) {
     body()
 
     node {
+        label 'any'
         try {
             stage ('Clone') {
                 checkout scm
